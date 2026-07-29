@@ -458,7 +458,7 @@ function OutletSection({
           </div>
           <p>Alamat dan nomor berikut mengikuti materi menu resmi DIMSAM KUY.</p>
         </div>
-        <div className="outlet-grid" data-reveal="stagger">
+        <div className="outlet-board" data-reveal="up" aria-label="Daftar outlet DIMSAM KUY">
           {OUTLETS_DATA.map((outlet) => {
             const active = selected.id === outlet.id;
             return (
