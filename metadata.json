@@ -1,6 +1,6 @@
 {
   "name": "DIMSAM KUY",
-  "description": "Homemade Dimsum Mentai Halal Premium Quality di Makassar. Informasi menu, harga, lokasi outlet, promo, dan pemesanan WhatsApp, GoFood, GrabFood & ShopeeFood.",
+  "description": "Landing page menu, harga, outlet, dan pemesanan DIMSAM KUY.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": []
 }
