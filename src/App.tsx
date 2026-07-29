@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowRight,
   Check,
@@ -207,10 +207,24 @@ function ProductCard({
 
 function MenuSection({ onOrder }: { onOrder: (product: Product) => void }) {
   const [category, setCategory] = useState('semua');
+  const gridRef = useRef<HTMLDivElement>(null);
   const products = useMemo(
     () => PRODUCTS_DATA.filter((product) => category === 'semua' || product.category === category),
     [category],
   );
+
+  useEffect(() => {
+    gridRef.current?.scrollTo({ left: 0, behavior: 'smooth' });
+  }, [category]);
+
+  const scrollMenu = (direction: -1 | 1) => {
+    const grid = gridRef.current;
+    if (!grid) return;
+    grid.scrollBy({
+      left: direction * Math.max(260, grid.clientWidth * 0.82),
+      behavior: 'smooth',
+    });
+  };
 
   return (
     <section id="menu" className="section menu-section">
@@ -239,7 +253,19 @@ function MenuSection({ onOrder }: { onOrder: (product: Product) => void }) {
           ))}
         </div>
 
-        <div className="product-grid">
+        <div className="mobile-menu-guide">
+          <span>Geser untuk lihat menu lainnya</span>
+          <div aria-label="Navigasi menu">
+            <button type="button" onClick={() => scrollMenu(-1)} aria-label="Menu sebelumnya">
+              <ArrowRight size={18} />
+            </button>
+            <button type="button" onClick={() => scrollMenu(1)} aria-label="Menu berikutnya">
+              <ArrowRight size={18} />
+            </button>
+          </div>
+        </div>
+
+        <div className="product-grid" ref={gridRef}>
           {products.map((product) => (
             <ProductCard key={product.id} product={product} onOrder={onOrder} />
           ))}
