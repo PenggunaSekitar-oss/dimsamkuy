@@ -208,6 +208,7 @@ function ProductCard({
 function MenuSection({ onOrder }: { onOrder: (product: Product) => void }) {
   const [category, setCategory] = useState('semua');
   const gridRef = useRef<HTMLDivElement>(null);
+  const hasPreviewedScrollRef = useRef(false);
   const products = useMemo(
     () => PRODUCTS_DATA.filter((product) => category === 'semua' || product.category === category),
     [category],
@@ -216,6 +217,58 @@ function MenuSection({ onOrder }: { onOrder: (product: Product) => void }) {
   useEffect(() => {
     gridRef.current?.scrollTo({ left: 0, behavior: 'smooth' });
   }, [category]);
+
+  useEffect(() => {
+    const grid = gridRef.current;
+    const isMobile = window.matchMedia('(max-width: 760px)').matches;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!grid || !isMobile || reduceMotion || hasPreviewedScrollRef.current) return;
+
+    let forwardTimer: number | undefined;
+    let returnTimer: number | undefined;
+    let cancelled = false;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting || hasPreviewedScrollRef.current) return;
+
+        hasPreviewedScrollRef.current = true;
+        observer.disconnect();
+
+        forwardTimer = window.setTimeout(() => {
+          if (cancelled) return;
+          grid.scrollBy({
+            left: Math.min(180, grid.clientWidth * 0.52),
+            behavior: 'smooth',
+          });
+        }, 550);
+
+        returnTimer = window.setTimeout(() => {
+          if (cancelled) return;
+          grid.scrollTo({ left: 0, behavior: 'smooth' });
+        }, 1750);
+      },
+      { threshold: 0.45 },
+    );
+
+    const cancelPreview = () => {
+      cancelled = true;
+      observer.disconnect();
+      if (forwardTimer) window.clearTimeout(forwardTimer);
+      if (returnTimer) window.clearTimeout(returnTimer);
+    };
+
+    observer.observe(grid);
+    grid.addEventListener('pointerdown', cancelPreview, { once: true });
+    grid.addEventListener('wheel', cancelPreview, { once: true });
+
+    return () => {
+      cancelPreview();
+      grid.removeEventListener('pointerdown', cancelPreview);
+      grid.removeEventListener('wheel', cancelPreview);
+    };
+  }, []);
 
   const scrollMenu = (direction: -1 | 1) => {
     const grid = gridRef.current;
@@ -485,7 +538,17 @@ function Footer() {
           <a href="https://www.instagram.com/dimsam_kuy/" target="_blank" rel="noreferrer">
             <Instagram size={17} /> @dimsam_kuy
           </a>
-          <span>GoFood · GrabFood · ShopeeFood</span>
+          <div className="delivery-platforms" aria-label="Tersedia di platform pesan-antar">
+            <span className="delivery-platform">
+              <img src="/brands/gofood.svg" alt="GoFood" loading="lazy" />
+            </span>
+            <span className="delivery-platform">
+              <img src="/brands/grabfood.png" alt="GrabFood" loading="lazy" />
+            </span>
+            <span className="delivery-platform">
+              <img src="/brands/shopeefood.png" alt="ShopeeFood" loading="lazy" />
+            </span>
+          </div>
         </div>
       </div>
       <div className="container footer__bottom">

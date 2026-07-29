@@ -1050,6 +1050,33 @@ input:focus-visible {
   color: var(--yellow);
 }
 
+.delivery-platforms {
+  width: 100%;
+  margin-top: 4px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.footer__grid .delivery-platform {
+  min-width: 0;
+  min-height: 48px;
+  padding: 9px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 253, 248, 0.2);
+  border-radius: 12px;
+  background: var(--paper);
+}
+
+.delivery-platform img {
+  width: 100%;
+  max-width: 92px;
+  height: 27px;
+  display: block;
+  object-fit: contain;
+}
+
 .footer__bottom {
   min-height: 66px;
   display: flex;
