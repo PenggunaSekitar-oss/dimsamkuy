@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-brand-green: #547F50;
+    --color-brand-green-dark: #345A36;
+    --color-brand-green-deep: #244629;
+    --color-brand-yellow: #FFC72C;
+    --color-brand-red: #D94720;
+    --color-brand-red-dark: #B93419;
+    --color-cream: #FFF4D6;
+    --color-cream-dark: #F0DFC0;
+    --color-paper: #FFFCF4;
+    --color-ink: #1D2119;
+    --color-ink-muted: #5D6257;
+    --color-white: #FFFFFF;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+  }
+}
+
+.font-display {
+  font-family: 'Shrikhand', cursive, serif;
+}
+
+.font-sans {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Retro Text Shadows */
+.text-shadow-red {
+  text-shadow: 3px 4px 0px #D94720;
+}
+
+.text-shadow-black {
+  text-shadow: 3px 3px 0px #1D2119;
+}
+
+.text-shadow-yellow {
+  text-shadow: 2px 3px 0px #FFC72C;
+}
+
+.text-shadow-green {
+  text-shadow: 3px 4px 0px #244629;
+}
+
+/* Brand Grid Checkerboard */
+.brand-checkerboard {
+  background-color: #547F50;
+  background-image: 
+    linear-gradient(rgba(36, 70, 41, 0.28) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(36, 70, 41, 0.28) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.brand-checkerboard-dark {
+  background-color: #345A36;
+  background-image: 
+    linear-gradient(rgba(29, 33, 25, 0.35) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(29, 33, 25, 0.35) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Starburst / Scalloped Retro Badge */
+.starburst-badge {
+  clip-path: polygon(
+    50% 0%, 63% 5%, 72% 15%, 83% 13%, 88% 25%, 98% 30%, 96% 43%, 100% 55%,
+    93% 66%, 94% 79%, 83% 85%, 79% 97%, 66% 95%, 56% 100%, 45% 96%,
+    34% 98%, 26% 89%, 14% 87%, 10% 75%, 2% 67%, 5% 54%, 0% 41%,
+    7% 30%, 5% 17%, 18% 13%, 24% 2%, 37% 4%
+  );
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F0DFC0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #547F50;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #345A36;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
