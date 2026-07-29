@@ -111,7 +111,7 @@ function Header({ onOrder }: { onOrder: () => void }) {
           </nav>
           <div className="site-header__actions">
             <button className="button button--small button--primary header-order" type="button" onClick={onOrder}>
-              Pesan sekarang
+              Cara pesan
             </button>
             <button
               className="menu-toggle"
@@ -150,12 +150,13 @@ function Hero({ onOrder }: { onOrder: () => void }) {
           </h1>
           <p className="hero__lead">
             Pilih yang original, gurih nori, sampai family pack buat rame-rame.
-            Menu jelas, harga jelas, tinggal pesan dari outlet terdekat.
+            Cek menu dan harga di sini, lalu pesan melalui outlet atau aplikasi
+            pesan-antar pilihanmu.
           </p>
           <div className="hero__actions">
             <button className="button button--primary" type="button" onClick={onOrder}>
               <ShoppingBag size={19} />
-              Pesan sekarang
+              Lihat cara pesan
             </button>
             <a className="button button--light" href="#menu">
               Lihat menu
@@ -238,7 +239,7 @@ function ProductCard({
         </div>
         <p>{product.description}</p>
         <button type="button" onClick={() => onOrder(product)}>
-          Pilih menu <ArrowRight size={17} />
+          Cara pesan <ArrowRight size={17} />
         </button>
       </div>
     </article>
@@ -401,7 +402,7 @@ function PartyPack({ onOrder }: { onOrder: (product: Product) => void }) {
               <span>Mix Party <strong>Rp125K</strong></span>
             </div>
             <button className="button button--dark" type="button" onClick={() => onOrder(product)}>
-              Tanya pesanan acara
+              Hubungi outlet
               <MessageCircle size={19} />
             </button>
           </div>
@@ -415,15 +416,15 @@ function OrderSteps() {
   const steps = [
     ['01', 'Pilih menu', 'Tentukan dimsum atau party pack yang kamu mau.'],
     ['02', 'Pilih outlet', 'Pilih lokasi DIMSAM KUY yang paling dekat.'],
-    ['03', 'Lanjut WhatsApp', 'Pesan langsung dan konfirmasi ketersediaan.'],
+    ['03', 'Pesan di luar website', 'Hubungi outlet atau buka aplikasi pesan-antar.'],
   ];
 
   return (
     <section className="section steps-section">
       <div className="container">
         <div className="section-heading section-heading--center" data-reveal="up">
-          <p className="eyebrow">Cara pesan</p>
-          <h2>Tiga langkah, beres.</h2>
+          <p className="eyebrow">Jalur pemesanan</p>
+          <h2>Pilih menu di sini, pesan lewat outlet.</h2>
         </div>
         <div className="steps-grid" data-reveal="stagger">
           {steps.map(([number, title, description]) => (
@@ -491,7 +492,7 @@ function OutletSection({
             <strong>{selected.shortName}</strong>
           </div>
           <button className="button button--primary" type="button" onClick={onOrder}>
-            Pesan dari sini <ArrowRight size={18} />
+            Hubungi outlet <ArrowRight size={18} />
           </button>
         </div>
       </div>
@@ -503,7 +504,7 @@ function FAQ() {
   const items = [
     {
       question: 'Bagaimana cara memesan?',
-      answer: 'Pilih menu, tentukan outlet terdekat, lalu lanjutkan ke WhatsApp. Admin outlet akan membantu mengonfirmasi menu dan ketersediaannya.',
+      answer: 'Website ini hanya menampilkan informasi menu dan promo. Untuk membeli, datang ke outlet, hubungi outlet melalui WhatsApp, atau gunakan aplikasi pesan-antar.',
     },
     {
       question: 'Apakah tersedia di aplikasi pesan-antar?',
@@ -554,8 +555,8 @@ function ClosingCTA({ onOrder }: { onOrder: () => void }) {
     <section className="closing-cta checkerboard">
       <div className="container closing-cta__inner">
         <div data-reveal="left">
-          <p className="eyebrow eyebrow--yellow">Sudah tahu mau pesan apa?</p>
-          <h2>Kalau lapar, jangan cuma lihat-lihat.</h2>
+          <p className="eyebrow eyebrow--yellow">Sudah tahu mau pilih apa?</p>
+          <h2>Pesan lewat outlet terdekat.</h2>
         </div>
         <button
           className="button button--light"
@@ -564,7 +565,7 @@ function ClosingCTA({ onOrder }: { onOrder: () => void }) {
           data-reveal="right"
           data-reveal-delay="1"
         >
-          Pilih outlet & pesan <ArrowRight size={19} />
+          Lihat jalur pemesanan <ArrowRight size={19} />
         </button>
       </div>
     </section>
@@ -657,7 +658,7 @@ function OrderDialog({
         <div className="order-dialog__handle" aria-hidden="true" />
         <div className="order-dialog__header">
           <div>
-            <p className="eyebrow">Pesan DIMSAM KUY</p>
+            <p className="eyebrow">Pemesanan via outlet</p>
             <h2 id="order-dialog-title">{product?.name ?? 'Pilih outlet terdekat'}</h2>
           </div>
           <button type="button" onClick={onClose} aria-label="Tutup dialog"><X size={21} /></button>
@@ -694,7 +695,9 @@ function OrderDialog({
           Lanjut ke WhatsApp
         </a>
         <p className="order-dialog__note">
-          Tersedia juga di GoFood, GrabFood, dan ShopeeFood. Cari outlet DIMSAM KUY terdekat di aplikasimu.
+          Website ini tidak melayani checkout atau pembayaran. Kamu juga dapat
+          memesan lewat GoFood, GrabFood, atau ShopeeFood dengan mencari outlet
+          DIMSAM KUY terdekat.
         </p>
       </div>
     </div>
@@ -741,10 +744,10 @@ export default function App() {
       <Footer />
       <button className="mobile-order" type="button" onClick={() => openOrder()}>
         <span>
-          <small>Pesan dari</small>
+          <small>Outlet pilihan</small>
           {selectedOutlet.shortName}
         </span>
-        <span>Pesan sekarang <ArrowRight size={17} /></span>
+        <span>Cara pesan <ArrowRight size={17} /></span>
       </button>
       <OrderDialog
         open={isOrderOpen}

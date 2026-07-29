@@ -1,20 +1,34 @@
 # DIMSAM KUY
 
-Landing page resmi DIMSAM KUY untuk menampilkan menu, harga, outlet, dan jalur pemesanan WhatsApp.
+Landing page informasi dan promosi resmi DIMSAM KUY untuk menampilkan menu,
+harga, outlet, serta jalur pemesanan yang tersedia.
 
 ## Arah produk
 
 - Mobile-first dan cepat dibuka dari bio Instagram.
 - Identitas retro hijau, kuning, dan merah mengikuti materi brand.
 - Foto produk menggunakan materi asli DIMSAM KUY.
-- Alur pemesanan: pilih menu → pilih outlet → lanjut WhatsApp.
+- Website berfungsi sebagai katalog informasi dan media promosi, bukan toko online.
+- Pembelian dilakukan melalui outlet offline, WhatsApp outlet, atau aplikasi
+  pesan-antar yang tersedia.
+- Alur informasi: lihat menu → pilih outlet → lanjut ke kanal pemesanan eksternal.
 - Tidak ada checkout atau pembayaran di dalam website.
 
 ## Data publik
 
 Harga, alamat, nomor WhatsApp, dan jam operasional mengikuti materi menu yang diberikan. Ketersediaan menu tetap perlu dikonfirmasi kepada outlet.
 
-Website tidak menampilkan promo, testimoni, alamat outlet, klaim komposisi, maupun tautan marketplace yang belum dikonfirmasi.
+Website tidak menampilkan promo, testimoni, alamat outlet, klaim komposisi,
+maupun tautan marketplace yang belum dikonfirmasi.
+
+## Batas fungsi website
+
+- Website tidak menerima pesanan, pembayaran, akun pelanggan, atau keranjang.
+- Tombol pemesanan hanya membantu pengunjung memilih outlet dan membuka WhatsApp.
+- GoFood, GrabFood, dan ShopeeFood tetap dibuka melalui aplikasi/platform
+  masing-masing.
+- Ketersediaan, ongkos kirim, pembayaran, serta pemenuhan pesanan ditangani oleh
+  outlet atau platform terkait.
 
 ## Menjalankan proyek
 
