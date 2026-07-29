@@ -35,6 +35,41 @@ const formatPrice = (price: number | null) =>
       }).format(price)
     : 'Tanya outlet';
 
+function useScrollReveal() {
+  useEffect(() => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const elements = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
+
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      elements.forEach((element) => element.classList.add('is-visible'));
+      return;
+    }
+
+    document.documentElement.classList.add('reveal-ready');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        });
+      },
+      {
+        threshold: 0.14,
+        rootMargin: '0px 0px -8% 0px',
+      },
+    );
+
+    elements.forEach((element) => observer.observe(element));
+
+    return () => {
+      observer.disconnect();
+      document.documentElement.classList.remove('reveal-ready');
+    };
+  }, []);
+}
+
 function BrandMark({ compact = false }: { compact?: boolean }) {
   return (
     <a className="brand-mark" href="#top" aria-label="DIMSAM KUY, kembali ke atas">
@@ -107,7 +142,7 @@ function Hero({ onOrder }: { onOrder: () => void }) {
   return (
     <section id="top" className="hero checkerboard">
       <div className="container hero__grid">
-        <div className="hero__content">
+        <div className="hero__content" data-reveal="left">
           <p className="eyebrow eyebrow--yellow">Homemade dimsum halal di Makassar</p>
           <h1>
             Dimsum lumer,
@@ -134,7 +169,12 @@ function Hero({ onOrder }: { onOrder: () => void }) {
           </ul>
         </div>
 
-        <div className="hero-product" aria-label="Family Pack Mix Party DIMSAM KUY">
+        <div
+          className="hero-product"
+          aria-label="Family Pack Mix Party DIMSAM KUY"
+          data-reveal="scale"
+          data-reveal-delay="1"
+        >
           <div className="hero-product__image">
             <img
               src="/images/products/family-mix.webp"
@@ -282,7 +322,7 @@ function MenuSection({ onOrder }: { onOrder: (product: Product) => void }) {
   return (
     <section id="menu" className="section menu-section">
       <div className="container">
-        <div className="section-heading section-heading--split">
+        <div className="section-heading section-heading--split" data-reveal="left">
           <div>
             <p className="eyebrow">Menu DIMSAM KUY</p>
             <h2>Mau yang mana dulu?</h2>
@@ -292,7 +332,13 @@ function MenuSection({ onOrder }: { onOrder: (product: Product) => void }) {
           </p>
         </div>
 
-        <div className="category-tabs" role="group" aria-label="Filter kategori menu">
+        <div
+          className="category-tabs"
+          role="group"
+          aria-label="Filter kategori menu"
+          data-reveal="up"
+          data-reveal-delay="1"
+        >
           {categories.map((item) => (
             <button
               key={item.id}
@@ -318,7 +364,7 @@ function MenuSection({ onOrder }: { onOrder: (product: Product) => void }) {
           </div>
         </div>
 
-        <div className="product-grid" ref={gridRef}>
+        <div className="product-grid" ref={gridRef} data-reveal="stagger">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} onOrder={onOrder} />
           ))}
@@ -335,7 +381,7 @@ function PartyPack({ onOrder }: { onOrder: (product: Product) => void }) {
     <section id="party-pack" className="section party-section">
       <div className="container">
         <div className="party-panel">
-          <div className="party-panel__visual">
+          <div className="party-panel__visual" data-reveal="left">
             <span className="party-panel__number">16</span>
             <img
               src="/images/products/family-nori.webp"
@@ -343,7 +389,7 @@ function PartyPack({ onOrder }: { onOrder: (product: Product) => void }) {
               loading="lazy"
             />
           </div>
-          <div className="party-panel__copy">
+          <div className="party-panel__copy" data-reveal="right" data-reveal-delay="1">
             <p className="eyebrow eyebrow--red">Buat kumpul jadi lebih enak</p>
             <h2>Satu loyang, banyak yang kebagian.</h2>
             <p>
@@ -375,11 +421,11 @@ function OrderSteps() {
   return (
     <section className="section steps-section">
       <div className="container">
-        <div className="section-heading section-heading--center">
+        <div className="section-heading section-heading--center" data-reveal="up">
           <p className="eyebrow">Cara pesan</p>
           <h2>Tiga langkah, beres.</h2>
         </div>
-        <div className="steps-grid">
+        <div className="steps-grid" data-reveal="stagger">
           {steps.map(([number, title, description]) => (
             <article key={number}>
               <span>{number}</span>
@@ -405,14 +451,14 @@ function OutletSection({
   return (
     <section id="outlet" className="section outlet-section">
       <div className="container">
-        <div className="section-heading section-heading--split">
+        <div className="section-heading section-heading--split" data-reveal="left">
           <div>
             <p className="eyebrow eyebrow--yellow">Outlet Makassar</p>
             <h2>Pilih yang paling dekat.</h2>
           </div>
           <p>Alamat dan nomor berikut mengikuti materi menu resmi DIMSAM KUY.</p>
         </div>
-        <div className="outlet-grid">
+        <div className="outlet-grid" data-reveal="stagger">
           {OUTLETS_DATA.map((outlet) => {
             const active = selected.id === outlet.id;
             return (
@@ -439,7 +485,7 @@ function OutletSection({
             );
           })}
         </div>
-        <div className="outlet-order">
+        <div className="outlet-order" data-reveal="up" data-reveal-delay="1">
           <div>
             <span>Outlet aktif</span>
             <strong>{selected.shortName}</strong>
@@ -477,12 +523,12 @@ function FAQ() {
   return (
     <section id="faq" className="section faq-section">
       <div className="container faq-layout">
-        <div className="section-heading">
+        <div className="section-heading" data-reveal="left">
           <p className="eyebrow">Yang sering ditanyakan</p>
           <h2>Sebelum kamu pesan.</h2>
           <p>Masih ada pertanyaan? Admin outlet siap membantu lewat WhatsApp.</p>
         </div>
-        <div className="faq-list">
+        <div className="faq-list" data-reveal="right" data-reveal-delay="1">
           {items.map((item, index) => {
             const expanded = open === index;
             return (
@@ -507,11 +553,17 @@ function ClosingCTA({ onOrder }: { onOrder: () => void }) {
   return (
     <section className="closing-cta checkerboard">
       <div className="container closing-cta__inner">
-        <div>
+        <div data-reveal="left">
           <p className="eyebrow eyebrow--yellow">Sudah tahu mau pesan apa?</p>
           <h2>Kalau lapar, jangan cuma lihat-lihat.</h2>
         </div>
-        <button className="button button--light" type="button" onClick={onOrder}>
+        <button
+          className="button button--light"
+          type="button"
+          onClick={onOrder}
+          data-reveal="right"
+          data-reveal-delay="1"
+        >
           Pilih outlet & pesan <ArrowRight size={19} />
         </button>
       </div>
@@ -522,7 +574,7 @@ function ClosingCTA({ onOrder }: { onOrder: () => void }) {
 function Footer() {
   return (
     <footer className="footer">
-      <div className="container footer__grid">
+      <div className="container footer__grid" data-reveal="stagger">
         <div>
           <BrandMark />
           <p>Homemade dimsum halal di Makassar. Menu personal sampai party pack.</p>
@@ -650,6 +702,8 @@ function OrderDialog({
 }
 
 export default function App() {
+  useScrollReveal();
+
   const [selectedOutlet, setSelectedOutlet] = useState<Outlet>(() => {
     const savedId = window.localStorage.getItem('dimsam_kuy_outlet_id');
     return OUTLETS_DATA.find((outlet) => outlet.id === savedId) ?? OUTLETS_DATA[0];
