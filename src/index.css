@@ -187,6 +187,14 @@ input:focus-visible {
   background: rgba(248, 239, 216, 0.96);
   border-bottom: 1px solid var(--line);
   backdrop-filter: blur(12px);
+  transition:
+    background 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.site-header.is-scrolled {
+  background: rgba(248, 239, 216, 0.9);
+  box-shadow: 0 10px 32px rgba(31, 56, 38, 0.12);
 }
 
 .site-header__inner {
@@ -481,11 +489,13 @@ input:focus-visible {
 }
 
 .hero-product__image img {
+  --hero-parallax: 0px;
   width: 100%;
-  height: 100%;
+  height: calc(100% + 132px);
   object-fit: cover;
-  transform: scale(1.03);
-  animation: hero-image-breathe 6s ease-in-out infinite alternate;
+  transform: translate3d(0, calc(var(--hero-parallax) - 66px), 0) scale(1.08);
+  transform-origin: 50% 35%;
+  will-change: transform;
 }
 
 .hero-product__caption {
@@ -728,14 +738,17 @@ input:focus-visible {
 }
 
 .product-card__visual img {
+  --card-parallax: 0px;
   width: 100%;
-  height: 100%;
+  height: calc(100% + 32px);
   object-fit: cover;
-  transition: transform 240ms ease;
+  transform: translate3d(0, calc(var(--card-parallax) - 16px), 0) scale(1.06);
+  will-change: transform;
+  transition: transform 120ms linear;
 }
 
 .product-card:hover .product-card__visual img {
-  transform: scale(1.025);
+  transform: translate3d(0, calc(var(--card-parallax) - 16px), 0) scale(1.095);
 }
 
 .product-card__tag {
@@ -810,16 +823,30 @@ input:focus-visible {
 }
 
 .party-section {
-  padding-top: 30px;
+  --party-progress: 0;
+  position: relative;
+  min-height: 168vh;
   background: var(--cream);
 }
 
+.party-section__sticky {
+  position: sticky;
+  top: 70px;
+  min-height: calc(100vh - 70px);
+  padding-block: 34px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
 .party-panel {
+  position: relative;
   overflow: hidden;
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
   border-radius: 28px;
   background: var(--yellow);
+  box-shadow: 0 26px 70px rgba(31, 56, 38, 0.14);
 }
 
 .party-panel__visual {
@@ -835,11 +862,16 @@ input:focus-visible {
 }
 
 .party-panel__visual img {
+  --party-scale: 1.04;
+  --party-image-shift: -12px;
   position: relative;
   z-index: 1;
   width: 100%;
-  min-height: 330px;
+  min-height: 365px;
   object-fit: cover;
+  transform: translate3d(0, var(--party-image-shift), 0) scale(var(--party-scale));
+  transform-origin: center;
+  will-change: transform;
 }
 
 .party-panel__number {
@@ -866,6 +898,34 @@ input:focus-visible {
 .party-panel__copy {
   padding: 65px 60px;
   align-self: center;
+}
+
+.party-panel__copy-inner {
+  --party-copy-shift: 18px;
+  transform: translate3d(0, var(--party-copy-shift), 0);
+  will-change: transform;
+}
+
+.party-scroll-progress {
+  position: absolute;
+  z-index: 4;
+  top: 22px;
+  right: 16px;
+  bottom: 22px;
+  width: 3px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(32, 32, 25, 0.16);
+}
+
+.party-scroll-progress span {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--red);
+  transform: scaleY(var(--party-progress));
+  transform-origin: top;
+  will-change: transform;
 }
 
 .party-panel h2 {
@@ -1322,15 +1382,6 @@ input:focus-visible {
 @keyframes marquee-loop {
   to {
     transform: translateX(-50%);
-  }
-}
-
-@keyframes hero-image-breathe {
-  from {
-    transform: scale(1.03);
-  }
-  to {
-    transform: scale(1.085) translate3d(-1.2%, -0.8%, 0);
   }
 }
 
@@ -1791,7 +1842,16 @@ input:focus-visible {
   }
 
   .party-section {
+    min-height: auto;
     padding-top: 8px;
+  }
+
+  .party-section__sticky {
+    position: relative;
+    top: auto;
+    min-height: auto;
+    padding-block: 8px 76px;
+    overflow: visible;
   }
 
   .party-panel {
@@ -1804,6 +1864,11 @@ input:focus-visible {
     min-height: 300px;
   }
 
+  .party-panel__visual img {
+    min-height: 330px;
+    transform: translate3d(0, -15px, 0) scale(1.06);
+  }
+
   .party-panel__number {
     top: 18px;
     left: 20px;
@@ -1814,8 +1879,26 @@ input:focus-visible {
     padding: 36px 24px 40px;
   }
 
+  .party-panel__copy-inner {
+    transform: none;
+  }
+
   .party-panel__copy .button {
     width: 100%;
+  }
+
+  .party-scroll-progress {
+    top: auto;
+    right: 22px;
+    bottom: 14px;
+    left: 22px;
+    width: auto;
+    height: 3px;
+  }
+
+  .party-scroll-progress span {
+    transform: scaleX(1);
+    transform-origin: left;
   }
 
   .steps-grid {
@@ -2110,5 +2193,14 @@ input:focus-visible {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+  }
+
+  .hero-product__image img,
+  .product-card__visual img,
+  .product-card:hover .product-card__visual img,
+  .party-panel__visual img,
+  .party-panel__copy-inner {
+    transform: none !important;
+    will-change: auto !important;
   }
 }
