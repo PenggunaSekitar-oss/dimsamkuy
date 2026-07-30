@@ -70,6 +70,95 @@ function useScrollReveal() {
   }, []);
 }
 
+function useScrollMotion() {
+  useEffect(() => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const header = document.querySelector<HTMLElement>('.site-header');
+    const heroImage = document.querySelector<HTMLElement>('.hero-product__image img');
+    const partySection = document.querySelector<HTMLElement>('[data-scroll-scene="party"]');
+    const partyImage = partySection?.querySelector<HTMLElement>('[data-scroll-zoom]');
+    const partyCopy = partySection?.querySelector<HTMLElement>('[data-scroll-copy]');
+    const getProductImages = () =>
+      Array.from(document.querySelectorAll<HTMLElement>('.product-card__visual img'));
+
+    let frame = 0;
+
+    const clamp = (value: number, min: number, max: number) =>
+      Math.min(Math.max(value, min), max);
+
+    const update = () => {
+      frame = 0;
+      const scrollY = window.scrollY;
+      header?.classList.toggle('is-scrolled', scrollY > 40);
+
+      if (reduceMotion.matches) {
+        heroImage?.style.removeProperty('--hero-parallax');
+        partySection?.style.removeProperty('--party-progress');
+        partyImage?.style.removeProperty('--party-scale');
+        partyImage?.style.removeProperty('--party-image-shift');
+        partyCopy?.style.removeProperty('--party-copy-shift');
+        getProductImages().forEach((image) => image.style.removeProperty('--card-parallax'));
+        return;
+      }
+
+      heroImage?.style.setProperty(
+        '--hero-parallax',
+        `${clamp(scrollY * 0.22, 0, 118).toFixed(1)}px`,
+      );
+
+      if (partySection && partyImage && partyCopy) {
+        const rect = partySection.getBoundingClientRect();
+        const travel = Math.max(partySection.offsetHeight - window.innerHeight, 1);
+        const progress = clamp(-rect.top / travel, 0, 1);
+
+        partySection.style.setProperty('--party-progress', progress.toFixed(4));
+        partyImage.style.setProperty('--party-scale', (1.04 + progress * 0.14).toFixed(4));
+        partyImage.style.setProperty(
+          '--party-image-shift',
+          `${(-12 + progress * 24).toFixed(1)}px`,
+        );
+        partyCopy.style.setProperty(
+          '--party-copy-shift',
+          `${(18 - progress * 36).toFixed(1)}px`,
+        );
+      }
+
+      getProductImages().forEach((image, index) => {
+        const card = image.closest<HTMLElement>('.product-card');
+        if (!card) return;
+
+        const rect = card.getBoundingClientRect();
+        if (rect.bottom < -80 || rect.top > window.innerHeight + 80) return;
+
+        const centerOffset = rect.top + rect.height / 2 - window.innerHeight / 2;
+        const speed = index % 3 === 0 ? 0.045 : index % 3 === 1 ? 0.033 : 0.039;
+        image.style.setProperty(
+          '--card-parallax',
+          `${clamp(centerOffset * speed, -14, 14).toFixed(1)}px`,
+        );
+      });
+    };
+
+    const requestUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener('scroll', requestUpdate, { passive: true });
+    window.addEventListener('resize', requestUpdate);
+    reduceMotion.addEventListener('change', requestUpdate);
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', requestUpdate);
+      window.removeEventListener('resize', requestUpdate);
+      reduceMotion.removeEventListener('change', requestUpdate);
+      header?.classList.remove('is-scrolled');
+    };
+  }, []);
+}
+
 function BrandMark({ compact = false }: { compact?: boolean }) {
   return (
     <a className="brand-mark" href="#top" aria-label="DIMSAM KUY, kembali ke atas">
@@ -386,32 +475,45 @@ function PartyPack({ onOrder }: { onOrder: (product: Product) => void }) {
   const product = PRODUCTS_DATA.find((item) => item.id === 'family-pack-mix-party')!;
 
   return (
-    <section id="party-pack" className="section party-section">
-      <div className="container">
-        <div className="party-panel">
-          <div className="party-panel__visual" data-reveal="left">
-            <span className="party-panel__number">16</span>
-            <img
-              src="/images/products/family-nori.webp"
-              alt="Family Pack Party Nori DIMSAM KUY"
-              loading="lazy"
-            />
-          </div>
-          <div className="party-panel__copy" data-reveal="right" data-reveal-delay="1">
-            <p className="eyebrow eyebrow--red">Buat kumpul jadi lebih enak</p>
-            <h2>Satu loyang, banyak yang kebagian.</h2>
-            <p>
-              Family Pack tersedia dalam pilihan Party Nori dan Mix Party. Cocok buat
-              kumpul keluarga, rapat, arisan, atau acara kecil.
-            </p>
-            <div className="party-options">
-              <span>Party Nori <strong>Rp122K</strong></span>
-              <span>Mix Party <strong>Rp125K</strong></span>
+    <section
+      id="party-pack"
+      className="party-section"
+      data-scroll-scene="party"
+      style={{ '--party-progress': 0 } as React.CSSProperties}
+    >
+      <div className="party-section__sticky">
+        <div className="container">
+          <div className="party-panel">
+            <div className="party-panel__visual" data-reveal="left">
+              <span className="party-panel__number">16</span>
+              <img
+                src="/images/products/family-nori.webp"
+                alt="Family Pack Party Nori DIMSAM KUY"
+                loading="lazy"
+                data-scroll-zoom
+              />
             </div>
-            <button className="button button--dark" type="button" onClick={() => onOrder(product)}>
-              Hubungi outlet
-              <MessageCircle size={19} />
-            </button>
+            <div className="party-panel__copy" data-reveal="right" data-reveal-delay="1">
+              <div className="party-panel__copy-inner" data-scroll-copy>
+                <p className="eyebrow eyebrow--red">Buat kumpul jadi lebih enak</p>
+                <h2>Satu loyang, banyak yang kebagian.</h2>
+                <p>
+                  Family Pack tersedia dalam pilihan Party Nori dan Mix Party. Cocok buat
+                  kumpul keluarga, rapat, arisan, atau acara kecil.
+                </p>
+                <div className="party-options">
+                  <span>Party Nori <strong>Rp122K</strong></span>
+                  <span>Mix Party <strong>Rp125K</strong></span>
+                </div>
+                <button className="button button--dark" type="button" onClick={() => onOrder(product)}>
+                  Hubungi outlet
+                  <MessageCircle size={19} />
+                </button>
+              </div>
+            </div>
+            <div className="party-scroll-progress" aria-hidden="true">
+              <span />
+            </div>
           </div>
         </div>
       </div>
@@ -713,6 +815,7 @@ function OrderDialog({
 
 export default function App() {
   useScrollReveal();
+  useScrollMotion();
 
   const [selectedOutlet, setSelectedOutlet] = useState<Outlet>(() => {
     const savedId = window.localStorage.getItem('dimsam_kuy_outlet_id');
