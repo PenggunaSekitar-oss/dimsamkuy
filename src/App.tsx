@@ -734,8 +734,6 @@ export default function App() {
   return (
     <>
       <Header onOrder={() => openOrder()} />
-      <div className="edge-melt edge-melt--left" aria-hidden="true" />
-      <div className="edge-melt edge-melt--right" aria-hidden="true" />
       <main>
         <Hero onOrder={() => openOrder()} />
         <MarqueeStrip />
