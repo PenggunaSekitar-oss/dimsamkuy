@@ -145,8 +145,8 @@ function Hero({ onOrder }: { onOrder: () => void }) {
         <div className="hero__content" data-reveal="left">
           <p className="eyebrow eyebrow--yellow">Homemade dimsum halal di Makassar</p>
           <h1>
-            Dimsum lumer,
-            <span>isiannya nggak pelit.</span>
+            <span className="hero__title-primary">Dimsum lumer,</span>
+            <span className="hero__title-secondary">isiannya nggak pelit.</span>
           </h1>
           <p className="hero__lead">
             Pilih yang original, gurih nori, sampai family pack buat rame-rame.
