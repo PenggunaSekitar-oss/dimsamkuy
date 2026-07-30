@@ -200,14 +200,21 @@ function Hero({ onOrder }: { onOrder: () => void }) {
 }
 
 function MarqueeStrip() {
+  const items = ['Original', 'Nori', 'Mozarella', 'Dimsum Goreng', 'Party Pack'];
+
   return (
     <div className="brand-strip" aria-label="Pilihan menu DIMSAM KUY">
-      <div className="container brand-strip__inner">
-        <span>Original</span><Minus aria-hidden="true" />
-        <span>Nori</span><Minus aria-hidden="true" />
-        <span>Mozarella</span><Minus aria-hidden="true" />
-        <span>Dimsum Goreng</span><Minus aria-hidden="true" />
-        <span>Party Pack</span>
+      <div className="brand-strip__track">
+        {[false, true].map((duplicate) => (
+          <div className="brand-strip__group" aria-hidden={duplicate || undefined} key={String(duplicate)}>
+            {items.map((item) => (
+              <span className="brand-strip__item" key={item}>
+                <span>{item}</span>
+                <Minus aria-hidden="true" />
+              </span>
+            ))}
+          </div>
+        ))}
       </div>
     </div>
   );
