@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   ArrowRight,
   Check,
@@ -312,9 +312,11 @@ function MarqueeStrip() {
 function ProductCard({
   product,
   onOrder,
+  decorative = false,
 }: {
   product: Product;
   onOrder: (product: Product) => void;
+  decorative?: boolean;
 }) {
   const tag = product.tags.includes('best-seller')
     ? 'Favorit'
@@ -323,7 +325,10 @@ function ProductCard({
       : null;
 
   return (
-    <article className={`product-card ${product.category === 'party' ? 'product-card--wide' : ''}`}>
+    <article
+      className={`product-card ${product.category === 'party' ? 'product-card--wide' : ''}`}
+      aria-hidden={decorative || undefined}
+    >
       <div className="product-card__visual">
         {tag && <span className="product-card__tag">{tag}</span>}
         <img src={product.image} alt={product.altText} loading="lazy" />
@@ -334,7 +339,7 @@ function ProductCard({
           <strong>{formatPrice(product.price)}</strong>
         </div>
         <p>{product.description}</p>
-        <button type="button" onClick={() => onOrder(product)}>
+        <button type="button" tabIndex={decorative ? -1 : 0} onClick={() => onOrder(product)}>
           Cara pesan <ArrowRight size={17} />
         </button>
       </div>
@@ -344,77 +349,28 @@ function ProductCard({
 
 function MenuSection({ onOrder }: { onOrder: (product: Product) => void }) {
   const [category, setCategory] = useState('semua');
-  const gridRef = useRef<HTMLDivElement>(null);
-  const hasPreviewedScrollRef = useRef(false);
   const products = useMemo(
     () => PRODUCTS_DATA.filter((product) => category === 'semua' || product.category === category),
     [category],
   );
+  const menuRows = useMemo(() => {
+    const sources =
+      products.length === 1
+        ? [products, products]
+        : [
+            products.filter((_, index) => index % 2 === 0),
+            products.filter((_, index) => index % 2 === 1),
+          ];
 
-  useEffect(() => {
-    gridRef.current?.scrollTo({ left: 0, behavior: 'smooth' });
-  }, [category]);
+    return sources.map((source) => {
+      if (!source.length) return [];
 
-  useEffect(() => {
-    const grid = gridRef.current;
-    const isMobile = window.matchMedia('(max-width: 760px)').matches;
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (!grid || !isMobile || reduceMotion || hasPreviewedScrollRef.current) return;
-
-    let forwardTimer: number | undefined;
-    let returnTimer: number | undefined;
-    let cancelled = false;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting || hasPreviewedScrollRef.current) return;
-
-        hasPreviewedScrollRef.current = true;
-        observer.disconnect();
-
-        forwardTimer = window.setTimeout(() => {
-          if (cancelled) return;
-          grid.scrollBy({
-            left: Math.min(180, grid.clientWidth * 0.52),
-            behavior: 'smooth',
-          });
-        }, 550);
-
-        returnTimer = window.setTimeout(() => {
-          if (cancelled) return;
-          grid.scrollTo({ left: 0, behavior: 'smooth' });
-        }, 1750);
-      },
-      { threshold: 0.45 },
-    );
-
-    const cancelPreview = () => {
-      cancelled = true;
-      observer.disconnect();
-      if (forwardTimer) window.clearTimeout(forwardTimer);
-      if (returnTimer) window.clearTimeout(returnTimer);
-    };
-
-    observer.observe(grid);
-    grid.addEventListener('pointerdown', cancelPreview, { once: true });
-    grid.addEventListener('wheel', cancelPreview, { once: true });
-
-    return () => {
-      cancelPreview();
-      grid.removeEventListener('pointerdown', cancelPreview);
-      grid.removeEventListener('wheel', cancelPreview);
-    };
-  }, []);
-
-  const scrollMenu = (direction: -1 | 1) => {
-    const grid = gridRef.current;
-    if (!grid) return;
-    grid.scrollBy({
-      left: direction * Math.max(260, grid.clientWidth * 0.82),
-      behavior: 'smooth',
+      return Array.from({ length: Math.max(5, source.length) }, (_, index) => ({
+        product: source[index % source.length],
+        decorative: index >= source.length,
+      }));
     });
-  };
+  }, [products]);
 
   return (
     <section id="menu" className="section menu-section">
@@ -449,21 +405,36 @@ function MenuSection({ onOrder }: { onOrder: (product: Product) => void }) {
           ))}
         </div>
 
-        <div className="mobile-menu-guide">
-          <span>Geser untuk lihat menu lainnya</span>
-          <div aria-label="Navigasi menu">
-            <button type="button" onClick={() => scrollMenu(-1)} aria-label="Menu sebelumnya">
-              <ArrowRight size={18} />
-            </button>
-            <button type="button" onClick={() => scrollMenu(1)} aria-label="Menu berikutnya">
-              <ArrowRight size={18} />
-            </button>
-          </div>
-        </div>
-
-        <div className="product-grid" ref={gridRef} data-reveal="stagger">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} onOrder={onOrder} />
+        <div className="menu-marquee" aria-label="Daftar menu bergerak" data-reveal="up">
+          {menuRows.map((row, rowIndex) => (
+            <div
+              className="menu-marquee__viewport"
+              key={`${category}-${rowIndex}`}
+              aria-label={rowIndex === 0 ? 'Menu baris atas' : 'Menu baris bawah'}
+            >
+              <div
+                className={`menu-marquee__track menu-marquee__track--${
+                  rowIndex === 0 ? 'left' : 'right'
+                }`}
+              >
+                {[false, true].map((clone) => (
+                  <div
+                    className="menu-marquee__group"
+                    key={clone ? 'clone' : 'original'}
+                    aria-hidden={clone || undefined}
+                  >
+                    {row.map(({ product, decorative }, index) => (
+                      <ProductCard
+                        key={`${product.id}-${index}`}
+                        product={product}
+                        onOrder={onOrder}
+                        decorative={clone || decorative}
+                      />
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
       </div>
