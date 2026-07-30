@@ -8,6 +8,10 @@ harga, outlet, serta jalur pemesanan yang tersedia.
 - Mobile-first dan cepat dibuka dari bio Instagram.
 - Kartu menu disusun dalam rail dua baris agar halaman tetap ringkas dan mudah
   digeser dengan ibu jari.
+- Kartu outlet menggunakan rail horizontal berukuran ringkas seperti kartu
+  jalur pemesanan.
+- Ornamen PNG lumer menghiasi batas top-bar, sisi layar, dan bagian bawah tanpa
+  menghalangi interaksi.
 - Identitas retro hijau, kuning, dan merah mengikuti materi brand.
 - Foto produk menggunakan materi asli DIMSAM KUY.
 - Website berfungsi sebagai katalog informasi dan media promosi, bukan toko online.
