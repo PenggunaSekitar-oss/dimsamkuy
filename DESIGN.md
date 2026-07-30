@@ -42,8 +42,8 @@ tersedia.
   dan bayangan offset untuk membedakan kelompok konten.
 - Menu menggunakan rail dua baris; langkah pemesanan dan outlet menggunakan
   kartu geser horizontal berukuran normal dan ringkas.
-- Gunakan ornamen lumer transparan pada batas top-bar, sisi layar, dan bagian
-  bawah sebagai aksen; ornamen tidak boleh menutup konten atau menangkap input.
+- Gunakan ornamen lumer transparan bertetes panjang hanya pada batas top-bar dan
+  bagian bawah; jangan memasang ornamen di sisi layar.
 - Transisi masuk, marquee, gerak gambar, serta respons tekan harus terasa hidup
   tetapi tetap singkat dan menghormati preferensi reduced motion.
 - Tiga outlet ditampilkan dalam satu kartu kompak agar tidak memanjangkan halaman.

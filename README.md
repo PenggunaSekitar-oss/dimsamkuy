@@ -10,8 +10,8 @@ harga, outlet, serta jalur pemesanan yang tersedia.
   digeser dengan ibu jari.
 - Kartu outlet menggunakan rail horizontal berukuran ringkas seperti kartu
   jalur pemesanan.
-- Ornamen PNG lumer menghiasi batas top-bar, sisi layar, dan bagian bawah tanpa
-  menghalangi interaksi.
+- Ornamen PNG lumer dengan tetesan panjang menghiasi batas top-bar dan bagian
+  bawah tanpa menghalangi interaksi.
 - Identitas retro hijau, kuning, dan merah mengikuti materi brand.
 - Foto produk menggunakan materi asli DIMSAM KUY.
 - Website berfungsi sebagai katalog informasi dan media promosi, bukan toko online.
