@@ -36,7 +36,8 @@ tersedia.
 - Warna utama: hijau tua, kuning hangat, merah-oranye, dan krem.
 - Foto makanan menjadi pusat perhatian dan harus tajam serta realistis.
 - Animasi scroll bersifat pendukung: singkat, halus, dan tidak menghambat akses.
-- Mobile-first dengan menu produk yang ringkas dan mudah digeser.
+- Mobile mempertahankan ritme kartu horizontal ala desktop tanpa mengecilkan
+  teks: menu, langkah pemesanan, dan outlet dapat digeser per kartu.
 - Tiga outlet ditampilkan dalam satu kartu kompak agar tidak memanjangkan halaman.
 
 ## Kejujuran informasi
