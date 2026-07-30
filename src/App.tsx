@@ -464,7 +464,7 @@ function OutletSection({
             <p className="eyebrow eyebrow--yellow">Outlet Makassar</p>
             <h2>Pilih yang paling dekat.</h2>
           </div>
-          <p>Alamat dan nomor berikut mengikuti materi menu resmi DIMSAM KUY.</p>
+          <p>Geser kartu untuk melihat alamat dan kontak setiap outlet DIMSAM KUY.</p>
         </div>
         <div className="outlet-board" data-reveal="up" aria-label="Daftar outlet DIMSAM KUY">
           {OUTLETS_DATA.map((outlet) => {
@@ -734,6 +734,8 @@ export default function App() {
   return (
     <>
       <Header onOrder={() => openOrder()} />
+      <div className="edge-melt edge-melt--left" aria-hidden="true" />
+      <div className="edge-melt edge-melt--right" aria-hidden="true" />
       <main>
         <Hero onOrder={() => openOrder()} />
         <MarqueeStrip />
