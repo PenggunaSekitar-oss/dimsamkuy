@@ -64,6 +64,9 @@ tetap menggunakan identitas visual DIMSAM KUY:
 - Semua perhitungan scroll dijalankan melalui `requestAnimationFrame` dan hanya
   menganimasikan `transform`, opacity, dan CSS custom properties.
 - Jika `prefers-reduced-motion` aktif, parallax dan sticky motion dihentikan
+- Kartu menu memakai dua marquee tanpa ujung: baris atas bergerak ke kiri dan
+  baris bawah ke kanan. Gerak berhenti saat hover, disentuh, atau difokuskan;
+  pengguna `prefers-reduced-motion` mendapat rail yang bisa digeser manual.
   tanpa menyembunyikan konten.
 
 ## Kejujuran informasi
