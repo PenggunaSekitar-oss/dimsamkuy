@@ -685,14 +685,47 @@ input:focus-visible {
   color: var(--white);
 }
 
-.product-grid {
+.menu-marquee {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 22px;
+  gap: 20px;
+  overflow: hidden;
 }
 
-.mobile-menu-guide {
-  display: none;
+.menu-marquee__viewport {
+  width: 100%;
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+}
+
+.menu-marquee__track {
+  width: max-content;
+  display: flex;
+  will-change: transform;
+}
+
+.menu-marquee__track--left {
+  animation: menu-loop-left 38s linear infinite;
+}
+
+.menu-marquee__track--right {
+  animation: menu-loop-right 40s linear infinite;
+}
+
+.menu-marquee__group {
+  display: flex;
+  gap: 22px;
+  padding-right: 22px;
+}
+
+.menu-marquee .product-card {
+  width: clamp(270px, 28vw, 345px);
+  flex: 0 0 auto;
+}
+
+.menu-marquee__viewport:hover .menu-marquee__track,
+.menu-marquee__viewport:focus-within .menu-marquee__track,
+.menu-marquee__viewport:active .menu-marquee__track {
+  animation-play-state: paused;
 }
 
 .product-card {
@@ -1579,10 +1612,6 @@ input:focus-visible {
     font-size: 52px;
   }
 
-  .product-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .party-panel__copy {
     padding: 50px 36px;
   }
@@ -1731,30 +1760,26 @@ input:focus-visible {
     margin-right: -16px;
   }
 
-  .product-grid {
-    width: calc(100% + 16px);
-    margin-right: -16px;
-    padding: 2px 16px 22px 0;
-    display: grid;
-    grid-template-rows: repeat(2, minmax(0, auto));
-    grid-auto-flow: column;
-    grid-auto-columns: minmax(255px, 78vw);
-    grid-template-columns: none;
+  .menu-marquee {
+    width: calc(100% + 32px);
+    margin-left: -16px;
     gap: 14px;
-    overflow-x: auto;
-    overscroll-behavior-inline: contain;
-    scroll-behavior: smooth;
-    scroll-snap-type: inline mandatory;
-    scrollbar-width: none;
   }
 
-  .product-grid::-webkit-scrollbar {
-    display: none;
+  .menu-marquee__viewport {
+    mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  }
+
+  .menu-marquee__group {
+    gap: 14px;
+    padding-right: 14px;
+  }
+
+  .menu-marquee .product-card {
+    width: min(270px, 78vw);
   }
 
   .product-card {
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
     box-shadow: 5px 6px 0 rgba(31, 56, 38, 0.2);
   }
 
@@ -1794,51 +1819,6 @@ input:focus-visible {
 
   .product-card p {
     min-height: auto;
-  }
-
-  .mobile-menu-guide {
-    margin: -12px 0 14px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-  }
-
-  .mobile-menu-guide > span {
-    position: relative;
-    padding-left: 22px;
-    color: var(--muted);
-    font-size: 10px;
-    font-weight: 800;
-  }
-
-  .mobile-menu-guide > span::before {
-    content: "↔";
-    position: absolute;
-    left: 0;
-    color: var(--red);
-    font-size: 15px;
-    animation: swipe-hint 1.8s ease-in-out infinite;
-  }
-
-  .mobile-menu-guide > div {
-    display: flex;
-    gap: 7px;
-  }
-
-  .mobile-menu-guide button {
-    width: 38px;
-    height: 38px;
-    display: grid;
-    place-items: center;
-    border: 1px solid var(--line);
-    border-radius: 50%;
-    background: var(--paper);
-    cursor: pointer;
-  }
-
-  .mobile-menu-guide button:first-child svg {
-    transform: rotate(180deg);
   }
 
   .party-section {
@@ -2129,13 +2109,21 @@ input:focus-visible {
   }
 }
 
-@keyframes swipe-hint {
-  0%,
-  100% {
-    transform: translateX(0);
+@keyframes menu-loop-left {
+  from {
+    transform: translate3d(0, 0, 0);
   }
-  50% {
-    transform: translateX(5px);
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes menu-loop-right {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -2159,10 +2147,6 @@ input:focus-visible {
   .product-card__heading {
     flex-direction: column;
     gap: 7px;
-  }
-
-  .product-grid {
-    grid-auto-columns: minmax(238px, 82vw);
   }
 
   .steps-grid {
@@ -2202,5 +2186,25 @@ input:focus-visible {
   .party-panel__copy-inner {
     transform: none !important;
     will-change: auto !important;
+  }
+
+  .menu-marquee__viewport {
+    overflow-x: auto;
+    mask-image: none;
+    scrollbar-width: none;
+  }
+
+  .menu-marquee__viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .menu-marquee__track {
+    animation: none !important;
+    transform: none !important;
+    will-change: auto;
+  }
+
+  .menu-marquee__group[aria-hidden="true"] {
+    display: none;
   }
 }
