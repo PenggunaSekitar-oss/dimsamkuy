@@ -5,7 +5,8 @@ harga, outlet, serta jalur pemesanan yang tersedia.
 
 ## Arah produk
 
-- Mobile-first dan cepat dibuka dari bio Instagram.
+- Cepat dibuka dari bio Instagram dengan komposisi bergaya desktop yang
+  diadaptasi menjadi rail horizontal nyaman pada mobile.
 - Identitas retro hijau, kuning, dan merah mengikuti materi brand.
 - Foto produk menggunakan materi asli DIMSAM KUY.
 - Website berfungsi sebagai katalog informasi dan media promosi, bukan toko online.
