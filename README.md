@@ -6,8 +6,8 @@ harga, outlet, serta jalur pemesanan yang tersedia.
 ## Arah produk
 
 - Mobile-first dan cepat dibuka dari bio Instagram.
-- Kartu menu disusun dalam rail dua baris agar halaman tetap ringkas dan mudah
-  digeser dengan ibu jari.
+- Kartu menu bergerak tanpa batas dalam dua baris: bagian atas ke kiri dan
+  bagian bawah ke kanan.
 - Kartu outlet menggunakan rail horizontal berukuran ringkas seperti kartu
   jalur pemesanan.
 - Identitas retro hijau, kuning, dan merah mengikuti materi brand.
@@ -52,9 +52,9 @@ Hasil build tersedia di folder `dist`.
 
 ## Stack
 
+- Astro 5
 - React 19
 - TypeScript
-- Vite
 - Tailwind CSS 4
 - Lucide icons
 
@@ -64,7 +64,8 @@ Hasil build tersedia di folder `dist`.
 src/
 ├── App.tsx
 ├── index.css
-├── main.tsx
+├── pages/
+│   └── index.astro
 ├── types.ts
 └── data/
     ├── outlets.ts
