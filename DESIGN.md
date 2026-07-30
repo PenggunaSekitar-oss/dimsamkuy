@@ -1,5 +1,8 @@
 # DESIGN — DIMSAM KUY
 
+> Implementasi frontend menggunakan Astro dengan React island untuk interaksi
+> pemesanan, filter menu, dan animasi.
+
 ## Peran landing page
 
 Landing page DIMSAM KUY adalah media informasi dan promosi. Tujuan utamanya:
